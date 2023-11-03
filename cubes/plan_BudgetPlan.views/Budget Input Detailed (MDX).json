@@ -1,0 +1,36 @@
+{
+	"@type":"MDXView",
+	"Name":"Budget Input Detailed (MDX)",
+	"MDX@Code.link":"Budget Input Detailed (MDX).mdx",
+	"Meta": {
+		"Aliases": {
+			"[plan_chart_of_accounts].[plan_chart_of_accounts]": "AccountName",
+			"[plan_department].[plan_department]": "Department",
+			"[plan_time].[plan_time]": "Time",
+			"[plan_version].[plan_version]": "VersionName"
+		},
+		"ContextSets": {
+			"[plan_chart_of_accounts].[plan_chart_of_accounts]": {
+				"Expression": "{TM1SUBSETALL([plan_chart_of_accounts])}"
+			},
+			"[plan_source].[plan_source]": {
+				"IsPublic": true,
+				"SubsetName": "input"
+			},
+			"[plan_version].[plan_version]": {
+				"IsPublic": true,
+				"SubsetName": "All Versions"
+			}
+		},
+		"ExpandAboves": {
+			"[plan_business_unit].[Leaves]": false,
+			"[plan_business_unit].[plan_business_unit (2)]": false,
+			"[plan_chart_of_accounts].[plan_chart_of_accounts]": false,
+			"[plan_department].[plan_department]": false,
+			"[plan_exchange_rates].[plan_exchange_rates]": false,
+			"[plan_source].[plan_source]": false,
+			"[plan_time].[plan_time]": false,
+			"[plan_version].[plan_version]": false
+		}
+	}
+}

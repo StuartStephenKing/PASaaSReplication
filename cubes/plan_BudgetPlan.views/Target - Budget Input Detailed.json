@@ -1,0 +1,36 @@
+{
+	"@type":"MDXView",
+	"Name":"Target - Budget Input Detailed",
+	"MDX@Code.link":"Target - Budget Input Detailed.mdx",
+	"Meta": {
+		"Aliases": {},
+		"ExpandAboves": {
+			"[plan_source].[plan_source]": false,
+			"[plan_chart_of_accounts].[plan_chart_of_accounts]": false,
+			"[plan_version].[plan_version]": false,
+			"[plan_department].[plan_department]": false,
+			"[plan_business_unit].[plan_business_unit]": false,
+			"[plan_exchange_rates].[plan_exchange_rates]": false,
+			"[plan_time].[plan_time]": false
+		},
+		"ContextSets": {
+			"[plan_source].[plan_source]": {
+				"SubsetName": "input",
+				"IsPublic": true
+			},
+			"[plan_version].[plan_version]": {
+				"Expression": "{TM1FILTERBYLEVEL( { HIERARCHIZE( {TM1SUBSETALL( [plan_version] )} ) }, 0)}"
+			},
+			"[plan_department].[plan_department]": {
+				"Expression": "{ HIERARCHIZE( {TM1SUBSETALL( [plan_department] )} ) }"
+			},
+			"[plan_business_unit].[plan_business_unit]": {
+				"Expression": "{ HIERARCHIZE( {TM1SUBSETALL( [plan_business_unit] )} ) }"
+			},
+			"[plan_exchange_rates].[plan_exchange_rates]": {
+				"SubsetName": "local exchange rate",
+				"IsPublic": true
+			}
+		}
+	}
+}
