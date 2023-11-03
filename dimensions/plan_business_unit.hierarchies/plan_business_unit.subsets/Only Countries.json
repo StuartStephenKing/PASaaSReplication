@@ -1,0 +1,6 @@
+{
+	"@type":"Subset",
+	"Name":"Only Countries",
+	"Alias":"BusinessUnit",
+	"Expression":"{HIERARCHIZE(EXCEPT(TM1SUBSETALL([plan_business_unit]) , {[plan_business_unit].[plan_business_unit].[10000],[plan_business_unit].[plan_business_unit].[10100],[plan_business_unit].[plan_business_unit].[10200]}))}"
+}

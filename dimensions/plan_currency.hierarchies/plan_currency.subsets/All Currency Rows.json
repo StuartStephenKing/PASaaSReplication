@@ -1,0 +1,6 @@
+{
+	"@type":"Subset",
+	"Name":"All Currency Rows",
+	"Alias":"CurrencyName",
+	"Expression":"TM1SubsetAll([plan_currency])"
+}

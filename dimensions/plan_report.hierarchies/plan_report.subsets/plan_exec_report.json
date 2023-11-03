@@ -1,0 +1,17 @@
+{
+	"@type":"Subset",
+	"Name":"plan_exec_report",
+	"Alias":"Report",
+	"Elements":
+	[
+		{
+			"@id":"Dimensions('plan_report')/Hierarchies('plan_report')/Elements('ly budget')"
+		},
+		{
+			"@id":"Dimensions('plan_report')/Hierarchies('plan_report')/Elements('ly actual')"
+		},
+		{
+			"@id":"Dimensions('plan_report')/Hierarchies('plan_report')/Elements('budget')"
+		}
+	]
+}

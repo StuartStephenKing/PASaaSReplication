@@ -1,0 +1,11 @@
+{
+	"@type":"Subset",
+	"Name":"actual",
+	"Alias":"Report",
+	"Elements":
+	[
+		{
+			"@id":"Dimensions('plan_report')/Hierarchies('plan_report')/Elements('actual')"
+		}
+	]
+}

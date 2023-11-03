@@ -1,0 +1,6 @@
+{
+	"@type":"Subset",
+	"Name":"plan_time_2004 all_months",
+	"Alias":"Time",
+	"Expression":"{EXCEPT(TM1SubsetToSet([plan_time].[plan_time] , \"plan_time_2004_qtrs_and_month\" , \"public\") , {[plan_time].[plan_time].[Q1-2004],[plan_time].[plan_time].[Q2-2004],[plan_time].[plan_time].[Q3-2004],[plan_time].[plan_time].[Q4-2004]})}"
+}

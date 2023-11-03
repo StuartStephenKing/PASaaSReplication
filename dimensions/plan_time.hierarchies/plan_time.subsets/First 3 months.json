@@ -1,0 +1,6 @@
+{
+	"@type":"Subset",
+	"Name":"First 3 months",
+	"Alias":"Time",
+	"Expression":"{EXCEPT(DRILLDOWNMEMBER({[plan_time].[plan_time].[Q1-2004]} , {[plan_time].[plan_time].[Q1-2004]}) , {[plan_time].[plan_time].[Q1-2004]})}"
+}
