@@ -1,0 +1,83 @@
+#region Prolog
+vWorkerProcessName     = 'Extract and load data';
+vNow     = TIMST (NOW(), '\Y\m\d\h\i\s' );
+vLogFile = '/Logs/Processes/pull_data_from_remote_cubes_' | vNow | '.log';
+vUser = TM1User;
+vAPIKey = ATTRS('}Clients', vUser, 'PASaaS API Key');
+vGrant_type = 'urn:ibm:params:oauth:grant-type:apikey';
+vTokenUrl = 'https://iam.test.cloud.ibm.com/identity/token?apikey=' | vAPIKey |'&grant_type=' | vGrant_type;
+
+#Get Token
+ExecuteHttpRequest( 'POST', vTokenUrl );
+responseCode = HttpResponseGetStatusCode();
+vResponseBody  = HttpResponseGetBody();
+vResponseBodyLength = LONG ( vResponseBody );
+vAccessTokenStr = '"access_token":"';
+vAccessTokenStart = SCAN( vAccessTokenStr, vResponseBody );
+vAccessTokenLength = LONG( vAccessTokenStr );
+vResponseBodyAccessTokenStrToEnd= SUBST( vResponseBody, vAccessTokenStart + vAccessTokenLength, vResponseBodyLength - vAccessTokenStart);
+vAccessTokenEnd = SCAN( '"', vResponseBodyAccessTokenStrToEnd ) - 1;
+vBearerToken = SUBST( vResponseBodyAccessTokenStrToEnd, 1, vAccessTokenEnd );
+ASCIIOUTPUT( vLogFile, 'accessToken: ' | vBearerToken );
+
+#Authenticate
+vUrl = pBaseURL | pEnvironmentID | '/v0/tm1/' | pRemoteDatabase | '/api/v1/Configuration';
+ExecuteHttpRequest( 'GET', vUrl,  '-k', '-h Authorization:Bearer ' | vBearerToken, '-h Content-Type:application/json' );
+ASCIIOUTPUT( vLogFile, vUrl );
+responseCode = HttpResponseGetStatusCode();
+ASCIIOUTPUT( vLogFile, 'Response Code: ' | NumberToString( responseCode ));
+responseBody = HttpResponseGetBody();
+ASCIIOUTPUT( vLogFile, responseBody);
+
+#Load Leaf Level Extract process
+vUrl           = pBaseURL | pEnvironmentID | '/v0/tm1/' | pRemoteDatabase | '/api/v1/Processes';
+vTIProcessFile = pExportProcess | '.json';
+ASCIIOUTPUT( vLogFile, 'TI File: ' | vTIProcessFile);
+ExecuteHttpRequest( 'POST', vUrl,  '-k', '-h Content-Type:application/json', '-d @/TI/' | vTIProcessFile );
+ASCIIOUTPUT( vLogFile, vUrl );
+responseCode = HttpResponseGetStatusCode();
+ASCIIOUTPUT( vLogFile, 'Response Code: ' | NumberToString( responseCode ));
+responseBody = HttpResponseGetBody();
+ASCIIOUTPUT( vLogFile, responseBody);
+
+vExportDir     = 'Exports_' | vNow;
+
+vIndex = 1;
+vDim   = DIMNM ( '}Cubes', vIndex );
+  WHILE ( vDim @<> '');
+    IF ( SCAN ( pCubePrefix, vDim ) = 1 );
+      RunProcess ( vWorkerProcessName, 'pCube', vDim, 'pRemoteDatabase', pRemoteDatabase, 'pExportProcess', pExportProcess, 'pExportDir', vExportDir, 'pExportFile', vDim | '.csv', 'pBaseURL', pBaseURL, 'pEnvironmentID', pEnvironmentID );
+    ENDIF;
+  vIndex = vIndex + 1;
+  vDim   = DIMNM ( '}Cubes', vIndex );
+END;
+
+WaitForInternalJobs();
+
+#endregion
+#region Epilog
+
+# Remove export process from remote database
+IF ( pCleanRemoteProcess @= 'Y');
+    vUrl = pBaseURL | pEnvironmentID | '/v0/tm1/' | pRemoteDatabase | '/api/v1/Processes(''' | pExportProcess | ''')';
+    ExecuteHttpRequest( 'DELETE', vUrl,  '-k', '-h Authorization:Bearer ' | vBearerToken, '-h Content-Type:application/json' );
+    ASCIIOUTPUT( vLogFile, vUrl );
+    responseCode = HttpResponseGetStatusCode();
+    ASCIIOUTPUT( vLogFile, 'Response Code: ' | NumberToString( responseCode ));
+    responseBody = HttpResponseGetBody();
+    ASCIIOUTPUT( vLogFile, responseBody);
+ENDIF;
+
+# Remove export directory from remote model
+IF ( pCleanRemoteExportData @= 'Y' );
+    vUrl = pBaseURL | pEnvironmentID | '/v0/tm1/' | pRemoteDatabase | '/api/v1/Contents(''Files'')/Contents(''' | pExportProcess | ''')';
+    ExecuteHttpRequest( 'DELETE', vUrl,  '-k', '-h Authorization:Bearer ' | vBearerToken, '-h Content-Type:application/json' );
+    ASCIIOUTPUT( vLogFile, vUrl );
+    responseCode = HttpResponseGetStatusCode();
+    ASCIIOUTPUT( vLogFile, 'Response Code: ' | NumberToString( responseCode ));
+    responseBody = HttpResponseGetBody();
+    ASCIIOUTPUT( vLogFile, responseBody);
+ENDIF;
+
+
+#endregion

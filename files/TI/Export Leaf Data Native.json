@@ -1,0 +1,146 @@
+{
+    "Name": "Export Leaf Data Native",
+    "HasSecurityAccess": false,
+    "PrologProcedure": "vView       = 'GIT';\r\nvExportFile = '/' | pExportDir | '/' | pExportFile;\r\n\r\nvDimCount = CubeDimensionCountGet ( pCube );\r\nvIndex    = 1;\r\nvDim      = TABDIM ( pCube, vIndex );\r\nVIEWCREATE ( pCube, vView, 1 );\r\nWHILE (vDim @<> '');\r\n    ViewColumnDimensionSet( pCube, vView, vDim, vIndex );\r\n    IF ( SubsetExists( vDim, vView ) = 0 );\r\n        subsetMDX = 'TM1FILTERBYLEVEL({{[' | vDim | '].[' | vDim | '].MEMBERS}}, 0)';\r\n        SubsetCreateByMDX ( vView, subsetMDX, vDim, 1 );\r\n    ENDIF;\r\n    ViewSubsetAssign ( pCube, vView, vDim, vView );\r\n    vIndex = vIndex + 1;\r\n    vDim   = TABDIM(pCube, vIndex);\r\nEND;\r\n\r\nDataSourceType='VIEW';\r\nDatasourceNameForServer=pCube;\r\nDatasourceCubeview=vView;\r\n\r\nViewExtractSkipCalcsSet ( pCube, vView, 1 );\r\nViewExtractSkipRuleValuesSet ( pCube, vView, 1 );\r\nViewExtractSkipZeroesSet ( pCube, vView, 1 );",
+    "MetadataProcedure": "",
+    "DataProcedure": "SETOUTPUTCHARACTERSET(vExportFile, 'TM1CS_UTF8' );\r\n\r\nIF (vDimCount = 2);\r\n   TEXTOUTPUT (vExportFile, v1, v2, v3 );\r\nELSEIF (vDimCount = 3);\r\n   TEXTOUTPUT (vExportFile, v1, v2, v3, v4 );\r\nELSEIF (vDimCount = 4);\r\n   TEXTOUTPUT (vExportFile, v1, v2, v3, v4, v5 );\r\nELSEIF (vDimCount = 5);\r\n   TEXTOUTPUT (vExportFile, v1, v2, v3, v4, v5, v6 );\r\nELSEIF (vDimCount = 6);\r\n   TEXTOUTPUT (vExportFile, v1, v2, v3, v4, v5, v6, v7 );\r\nELSEIF (vDimCount = 7);\r\n   TEXTOUTPUT (vExportFile, v1, v2, v3, v4, v5, v6, v7, v8 );\r\nELSEIF (vDimCount = 8);\r\n   TEXTOUTPUT (vExportFile, v1, v2, v3, v4, v5, v6, v7, v8, v9 );\r\nELSEIF (vDimCount = 9);\r\n   TEXTOUTPUT (vExportFile, v1, v2, v3, v4, v5, v6, v7, v8, v9, v10 );\r\nELSEIF (vDimCount = 10);\r\n   TEXTOUTPUT (vExportFile, v1, v2, v3, v4, v5, v6, v7, v8, v9, v10, v11 );\r\nELSEIF (vDimCount = 11);\r\n   TEXTOUTPUT (vExportFile, v1, v2, v3, v4, v5, v6, v7, v8, v9, v10, v11, v12 );\r\nELSEIF (vDimCount = 12);\r\n   TEXTOUTPUT (vExportFile, v1, v2, v3, v4, v5, v6, v7, v8, v9, v10, v11, v12, v13 );\r\nENDIF;\r\n",
+    "EpilogProcedure": "",
+    "DataSource": {
+        "Type": "TM1CubeView",
+        "dataSourceNameForServer": "imageComboBox1",
+        "dataSourceNameForClient": "",
+        "view": "Big"
+    },
+    "Parameters": [
+        {
+            "Name": "pCube",
+            "Prompt": "",
+            "Value": "plan_BudgetPlan",
+            "Type": "String"
+        },
+        {
+            "Name": "pExportDir",
+            "Prompt": "",
+            "Value": "Exports",
+            "Type": "String"
+        },
+        {
+            "Name": "pExportFile",
+            "Prompt": "",
+            "Value": "plan_BudgetPlan.csv",
+            "Type": "String"
+        }
+    ],
+    "Variables": [
+        {
+            "Name": "v1",
+            "Type": "String",
+            "Position": 1,
+            "StartByte": 0,
+            "EndByte": 0
+        },
+        {
+            "Name": "v2",
+            "Type": "String",
+            "Position": 2,
+            "StartByte": 0,
+            "EndByte": 0
+        },
+        {
+            "Name": "v3",
+            "Type": "String",
+            "Position": 3,
+            "StartByte": 0,
+            "EndByte": 0
+        },
+        {
+            "Name": "v4",
+            "Type": "String",
+            "Position": 4,
+            "StartByte": 0,
+            "EndByte": 0
+        },
+        {
+            "Name": "v5",
+            "Type": "String",
+            "Position": 5,
+            "StartByte": 0,
+            "EndByte": 0
+        },
+        {
+            "Name": "v6",
+            "Type": "String",
+            "Position": 6,
+            "StartByte": 0,
+            "EndByte": 0
+        },
+        {
+            "Name": "v7",
+            "Type": "String",
+            "Position": 7,
+            "StartByte": 0,
+            "EndByte": 0
+        },
+        {
+            "Name": "v8",
+            "Type": "String",
+            "Position": 8,
+            "StartByte": 0,
+            "EndByte": 0
+        },
+        {
+            "Name": "v9",
+            "Type": "String",
+            "Position": 9,
+            "StartByte": 0,
+            "EndByte": 0
+        },
+        {
+            "Name": "v10",
+            "Type": "String",
+            "Position": 10,
+            "StartByte": 0,
+            "EndByte": 0
+        },
+        {
+            "Name": "v11",
+            "Type": "String",
+            "Position": 11,
+            "StartByte": 0,
+            "EndByte": 0
+        },
+        {
+            "Name": "v12",
+            "Type": "String",
+            "Position": 12,
+            "StartByte": 0,
+            "EndByte": 0
+        },
+        {
+            "Name": "v13",
+            "Type": "String",
+            "Position": 13,
+            "StartByte": 0,
+            "EndByte": 0
+        }
+    ],
+    "Attributes": {
+        "Caption": "Export Leaf Data__OLD"
+    },
+    "VariablesUIData": [
+        "VarType=32\fColType=827\f",
+        "VarType=32\fColType=827\f",
+        "VarType=32\fColType=827\f",
+        "VarType=32\fColType=827\f",
+        "VarType=32\fColType=827\f",
+        "VarType=32\fColType=827\f",
+        "VarType=32\fColType=827\f",
+        "VarType=32\fColType=827\f",
+        "VarType=32\fColType=827\f",
+        "VarType=32\fColType=827\f",
+        "VarType=32\fColType=827\f",
+        "VarType=32\fColType=827\f",
+        "VarType=32\fColType=827\f"
+    ],
+    "UIData": "_ParameterConstraints=e30=\f"
+}

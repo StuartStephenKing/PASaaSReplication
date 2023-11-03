@@ -1,0 +1,20 @@
+{
+	"@type":"Process",
+	"Name":"Clear Cubes",
+	"HasSecurityAccess":false,
+	"Code@Code.link":"Clear Cubes.ti",
+	"DataSource":
+	{
+		"Type":"None"
+	},
+	"Parameters":
+	[
+		{
+			"Name":"pCubePrefix",
+			"Prompt":"",
+			"Value":"plan_",
+			"Type":"String"
+		}
+	],
+	"Variables":[]
+}

@@ -1,0 +1,15 @@
+#region Prolog
+
+vIndex = 1;
+vDim   = DIMNM ( '}Cubes', vIndex );
+WHILE ( vDim @<> '');
+    ASCIIOutput ( '/Logs/Processes/clear_cubes.log', 'Checking ' | vDim );
+    IF ( SCAN ( pCubePrefix, vDim ) = 1 );
+        CubeClearData( vDim );
+        ASCIIOutput ( '/Logs/Processes/clear_cubes.log', 'Cleared ' | vDim );
+    ENDIF;
+    vIndex = vIndex + 1;
+    vDim   = DIMNM ( '}Cubes', vIndex );
+END;
+
+#endregion
